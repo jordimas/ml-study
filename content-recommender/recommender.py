@@ -22,16 +22,17 @@ def main():
 
     texts = []
     score_idx = 0
-    firefox_score_id = 0
+    firefox_score_idx = 0
     score_idx_to_id = {}
     for program in programs:
         score_idx_to_id[score_idx] = program
         program['score_idx'] = score_idx
         texts.append(program['content'])
-        score_idx += 1
         if int(program['id']) == 6750:
             print(f"Firefox score_id: {score_idx} - '{program['title']}'")
-            firefox_score_id = score_idx
+            firefox_score_idx = score_idx
+
+        score_idx += 1
 
     vectorizer = TfidfVectorizer()
     corpus = vectorizer.fit_transform(texts)
@@ -44,9 +45,9 @@ def main():
     print(similarity_matrix.shape)
     print(similarity_matrix)
 
-    similarity_score = list(enumerate(similarity_matrix[firefox_score_id]))
+    similarity_score = list(enumerate(similarity_matrix[firefox_score_idx]))
     similarity_score = sorted(similarity_score, key=lambda x: x[1], reverse=True)
-    similarity_score = similarity_score[1:5]
+    similarity_score = similarity_score[1:6]
     for score_idx in similarity_score:
         score_idx = score_idx[0]
 #        print(f"score_idx: {score_idx}")
