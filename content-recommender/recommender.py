@@ -13,26 +13,46 @@ def load_programs():
     print(f"Loaded {len(programs)} programs")
     return programs
 
+def get_array_with_texts(programs):
+    texts = []
+    for program in programs:
+        texts.append(program['content'])
+
+    return texts
+
+def add_score_idx(programs):
+    score_idx = 0
+    for program in programs:
+        program['score_idx'] = score_idx
+        if int(program['id']) == 6750:
+            print(f"Firefox score_id: {score_idx} - '{program['title']}'")
+            firefox_score_idx = score_idx
+
+        score_idx += 1
+
+def get_score_id_for_program_name(programs, program_name):
+    for program in programs:
+        if program['title'] == program_name:
+            return program['score_idx']
+
+    return -1
+
+def get_program_from_score_idx(programs, score_idx):
+    for program in programs:
+        if program['score_idx'] == score_idx:
+            return program
+
+    return None
+
 def main():
     print("Convers a Wordpress export to a JSON usable dataset")
     logging.basicConfig(filename="recommender.log", level=logging.DEBUG, filemode="w")
 
     # Load all words
     programs = load_programs()
+    texts = get_array_with_texts(programs)
+    add_score_idx(programs)
 
-    texts = []
-    score_idx = 0
-    firefox_score_idx = 0
-    score_idx_to_id = {}
-    for program in programs:
-        score_idx_to_id[score_idx] = program
-        program['score_idx'] = score_idx
-        texts.append(program['content'])
-        if int(program['id']) == 6750:
-            print(f"Firefox score_id: {score_idx} - '{program['title']}'")
-            firefox_score_idx = score_idx
-
-        score_idx += 1
 
     vectorizer = TfidfVectorizer()
     corpus = vectorizer.fit_transform(texts)
@@ -45,19 +65,17 @@ def main():
     print(similarity_matrix.shape)
     print(similarity_matrix)
 
-    similarity_score = list(enumerate(similarity_matrix[firefox_score_idx]))
+    score_idx = get_score_id_for_program_name(programs, "Firefox en català")
+
+    similarity_score = list(enumerate(similarity_matrix[score_idx]))
     similarity_score = sorted(similarity_score, key=lambda x: x[1], reverse=True)
     similarity_score = similarity_score[1:6]
     for score_idx in similarity_score:
         score_idx = score_idx[0]
 #        print(f"score_idx: {score_idx}")
-        program = score_idx_to_id[score_idx]
+        program = get_program_from_score_idx(programs, score_idx)
         print(program['title'])
 
-
-    #mapping = pd.Series(articles['id'], index = articles['title'])
-
-    #Recommend ID 
 
 if __name__ == "__main__":
     main()
