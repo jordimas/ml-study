@@ -55,9 +55,16 @@ def show_recommendations_for_program_name(programs, program_name, similarity_mat
         score_idx = score[0]
 #        print(f"score_idx: {score_idx}")
         program = get_program_from_score_idx(programs, score_idx)
-        print(f" {program['title']} - {score}")
+        #print(f" {program['title']} - {score}")
+        print(f" {program['title']}")
 
     print("")
+
+def read_stop_words():
+    with open('stopwords-ca.txt') as f:
+        lines = [line.rstrip() for line in f]
+
+    return lines
 
 def main():
     print("Convers a Wordpress export to a JSON usable dataset")
@@ -69,16 +76,17 @@ def main():
     add_score_idx(programs)
 
 
-    vectorizer = TfidfVectorizer()
+    stop_words = read_stop_words()
+    vectorizer = TfidfVectorizer(stop_words=stop_words)
     corpus = vectorizer.fit_transform(texts)
-    print("TfidfVectorizer")
-    print(corpus.shape)
-    print(corpus)
+    #print("TfidfVectorizer")
+    #print(corpus.shape)
+    #print(corpus)
     # output (doc, word) = tfif source
 
     similarity_matrix = linear_kernel(corpus, corpus)
-    print(similarity_matrix.shape)
-    print(similarity_matrix)
+    #print(similarity_matrix.shape)
+    #print(similarity_matrix)
 
     show_recommendations_for_program_name(programs, "Inkscape", similarity_matrix)
 
