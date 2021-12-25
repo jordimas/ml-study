@@ -44,6 +44,21 @@ def get_program_from_score_idx(programs, score_idx):
 
     return None
 
+def show_recommendations_for_program_name(programs, program_name, similarity_matrix):
+    score_idx = get_score_id_for_program_name(programs, program_name)
+    
+    similarity_score = list(enumerate(similarity_matrix[score_idx]))
+    similarity_score = sorted(similarity_score, key=lambda x: x[1], reverse=True)
+    similarity_score = similarity_score[1:6]
+    print(f"{program_name}")
+    for score in similarity_score:
+        score_idx = score[0]
+#        print(f"score_idx: {score_idx}")
+        program = get_program_from_score_idx(programs, score_idx)
+        print(f" {program['title']} - {score}")
+
+    print("")
+
 def main():
     print("Convers a Wordpress export to a JSON usable dataset")
     logging.basicConfig(filename="recommender.log", level=logging.DEBUG, filemode="w")
@@ -65,16 +80,10 @@ def main():
     print(similarity_matrix.shape)
     print(similarity_matrix)
 
-    score_idx = get_score_id_for_program_name(programs, "Firefox en català")
+    show_recommendations_for_program_name(programs, "Inkscape", similarity_matrix)
 
-    similarity_score = list(enumerate(similarity_matrix[score_idx]))
-    similarity_score = sorted(similarity_score, key=lambda x: x[1], reverse=True)
-    similarity_score = similarity_score[1:6]
-    for score_idx in similarity_score:
-        score_idx = score_idx[0]
-#        print(f"score_idx: {score_idx}")
-        program = get_program_from_score_idx(programs, score_idx)
-        print(program['title'])
+    for program in programs:
+        show_recommendations_for_program_name(programs, program['title'], similarity_matrix)        
 
 
 if __name__ == "__main__":
