@@ -3,11 +3,10 @@ from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import linear_kernel
 
-
+# See similar approcach https://medium.com/analytics-vidhya/content-based-recommender-systems-in-python-2b330e01eb80
 def main():
     print("Show concepts involved in the recommender")
-    logging.basicConfig(filename="recommender.log", level=logging.DEBUG, filemode="w")
-
+  
     corpus = [
         'this is one friend',
         'this is two friend',
@@ -26,7 +25,7 @@ def main():
     print(similary.shape)
     print(similary)
  
-    print("one element")
+    print("Similarity [3]")
     print(similary[3])
 
 
