@@ -63,7 +63,7 @@ def read_stop_words():
     return lines
 
 def main():
-    print("Convers a Wordpress export to a JSON usable dataset")
+    print("Shows recommendations given a program")
     logging.basicConfig(filename="recommender.log", level=logging.DEBUG, filemode="w")
 
     # Load all words
