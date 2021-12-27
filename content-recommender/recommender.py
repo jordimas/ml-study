@@ -79,19 +79,19 @@ def main():
     stop_words = read_stop_words()
     vectorizer = TfidfVectorizer(stop_words=stop_words)
     corpus = vectorizer.fit_transform(texts)
-    #print("TfidfVectorizer")
-    #print(corpus.shape)
-    #print(corpus)
+    print("TfidfVectorizer")
+    print(corpus.shape)
+    print(corpus)
     # output (doc, word) = tfif source
 
     similarity_matrix = linear_kernel(corpus, corpus)
-    #print(similarity_matrix.shape)
+    print(similarity_matrix.shape)
     #print(similarity_matrix)
 
     show_recommendations_for_program_name(programs, "Inkscape", similarity_matrix)
 
-    for program in programs:
-        show_recommendations_for_program_name(programs, program['title'], similarity_matrix)        
+    #for program in programs:
+    #    show_recommendations_for_program_name(programs, program['title'], similarity_matrix)        
 
 
 if __name__ == "__main__":
