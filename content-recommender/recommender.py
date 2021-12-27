@@ -24,10 +24,6 @@ def add_score_idx(programs):
     score_idx = 0
     for program in programs:
         program['score_idx'] = score_idx
-        if int(program['id']) == 6750:
-            print(f"Firefox score_id: {score_idx} - '{program['title']}'")
-            firefox_score_idx = score_idx
-
         score_idx += 1
 
 def get_score_id_for_program_name(programs, program_name):
