@@ -42,9 +42,6 @@ def main():
     print("** Recommendations")
     print(similarity_score)
 
-    print("test")
-    for item in enumerate(similarity_matrix[recommendations_for_doc]):
-        print(item)
     
 
 if __name__ == "__main__":
